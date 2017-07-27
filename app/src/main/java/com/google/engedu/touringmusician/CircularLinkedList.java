@@ -35,11 +35,33 @@ public class CircularLinkedList implements Iterable<Point> {
     Node head;
 
     public void insertBeginning(Point p) {
-        /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
+        Node newNode = new Node();
+        newNode.point = p;
+
+        if(head == null){//node is empty
+
+            newNode.prev = newNode;
+            newNode.next = newNode;
+            head = newNode;
+
+        }else{
+
+            //new node's next needs to point to previous first
+            //new node's prev needs to point to the last element
+            //previous first's prev needs to point to new node
+            //head needs to point to new no
+            //last element
+            newNode.next = head.next;//new node
+            head.next = newNode;//head points to new node
+
+            newNode.prev = newNode.next.prev;//newnode's prev points to the last element
+            newNode.prev.next = newNode; // last element points to new node
+
+            newNode.next.prev = newNode;// the previous first's prev element now points to new node
+
+
+        }
+
     }
 
     private float distanceBetween(Point from, Point to) {
