@@ -27,6 +27,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TourMap extends View {
 
     private Bitmap mapImage;
@@ -51,13 +54,24 @@ public class TourMap extends View {
          **  YOUR CODE GOES HERE
          **
          **/
+        List<Point> points = new ArrayList<>();
         for (Point p : list) {
+            points.add(p);
             /**
              **
              **  YOUR CODE GOES HERE
              **
              **/
             canvas.drawCircle(p.x, p.y, 20, pointPaint);
+        }
+
+        for(int i = 0; i < points.size(); i++)
+        {
+            if(i == points.size() - 1){
+                canvas.drawLine(points.get(i).x, points.get(i).y,points.get(0).x,points.get(0).y,pointPaint);
+            }else {
+                canvas.drawLine(points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y, pointPaint);
+            }
         }
         /**
          **
