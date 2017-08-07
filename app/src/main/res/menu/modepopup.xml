@@ -11,6 +11,10 @@
 
     <item
         android:id="@+id/smallest"
-        android:title="Smallest"/>
+        android:title="Smallest" />
+
+    <item
+        android:id="@+id/compareAll"
+        android:title="Compare all"/>
 
 </menu>

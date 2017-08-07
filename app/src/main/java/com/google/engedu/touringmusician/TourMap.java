@@ -28,12 +28,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TourMap extends View {
 
     private Bitmap mapImage;
-    private CircularLinkedList list = new CircularLinkedList();
+    private CircularLinkedList mainList = new CircularLinkedList();
+    private CircularLinkedList secondList = new CircularLinkedList();
+    private CircularLinkedList thirdList = new CircularLinkedList();
     private String insertMode = "Add";
 
     public TourMap(Context context) {
@@ -55,7 +58,11 @@ public class TourMap extends View {
          **
          **/
         List<Point> points = new ArrayList<>();
-        for (Point p : list) {
+        List<Point> secondPoints = new ArrayList<>();
+        List<Point> thirdPoints = new ArrayList<>();
+        populatePoints(secondPoints,secondList);
+        populatePoints(thirdPoints,thirdList);
+        for (Point p : mainList) {
             points.add(p);
             /**
              **
@@ -73,11 +80,49 @@ public class TourMap extends View {
                 canvas.drawLine(points.get(i).x, points.get(i).y, points.get(i + 1).x, points.get(i + 1).y, pointPaint);
             }
         }
+
+        if(insertMode.equals("Compare all")){
+
+            pointPaint.setColor(Color.BLACK);
+            for(int i = 0; i < secondPoints.size(); i++)
+            {
+                if(i == secondPoints.size() - 1){
+                    canvas.drawLine(secondPoints.get(i).x, secondPoints.get(i).y,secondPoints.get(0).x,secondPoints.get(0).y,pointPaint);
+                }else {
+                    canvas.drawLine(secondPoints.get(i).x, secondPoints.get(i).y, secondPoints.get(i + 1).x, secondPoints.get(i + 1).y, pointPaint);
+                }
+            }
+
+            pointPaint.setColor(Color.GREEN);
+            for(int i = 0; i < thirdPoints.size(); i++)
+            {
+                if(i == thirdPoints.size() - 1){
+                    canvas.drawLine(thirdPoints.get(i).x, thirdPoints.get(i).y,thirdPoints.get(0).x,thirdPoints.get(0).y,pointPaint);
+                }else {
+                    canvas.drawLine(thirdPoints.get(i).x, thirdPoints.get(i).y, thirdPoints.get(i + 1).x, thirdPoints.get(i + 1).y, pointPaint);
+                }
+            }
+
+        }
+
         /**
          **
          **  YOUR CODE GOES HERE
          **
          **/
+    }
+
+    private void populatePoints(List<Point> points, CircularLinkedList mainList) {
+        for (Point p : mainList) {
+            points.add(p);
+            /**
+             **
+             **  YOUR CODE GOES HERE
+             **
+             **/
+
+        }
+
     }
 
     @Override
@@ -86,15 +131,20 @@ public class TourMap extends View {
             case MotionEvent.ACTION_DOWN:
                 Point p = new Point((int) event.getX(), (int)event.getY());
                 if (insertMode.equals("Closest")) {
-                    list.insertNearest(p);
+                    mainList.insertNearest(p);
                 } else if (insertMode.equals("Smallest")) {
-                    list.insertSmallest(p);
-                } else {
-                    list.insertBeginning(p);
+                    mainList.insertSmallest(p);
+                } else if(insertMode.equals("Beginning")) {
+                    mainList.insertBeginning(p);
+                }else{
+                    mainList.insertNearest(p);
+                    secondList.insertSmallest(p);
+                    thirdList.insertBeginning(p);
+
                 }
                 TextView message = (TextView) ((Activity) getContext()).findViewById(R.id.game_status);
                 if (message != null) {
-                    message.setText(String.format("Tour length is now %.2f", list.totalDistance()));
+                    message.setText(String.format("Tour length is now %.2f", mainList.totalDistance(true)));
                 }
                 invalidate();
                 return true;
@@ -103,7 +153,7 @@ public class TourMap extends View {
     }
 
     public void reset() {
-        list.reset();
+        mainList.reset();
         invalidate();
     }
 
