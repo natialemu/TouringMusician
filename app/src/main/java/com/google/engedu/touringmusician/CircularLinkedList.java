@@ -24,13 +24,13 @@ public class CircularLinkedList implements Iterable<Point> {
         newNode.point = p;
         newlyInsertedNode = newNode;
 
-        if(head == null){//node is empty
+        if (head == null) {//node is empty
 
             newNode.prev = newNode;
             newNode.next = newNode;
             head = newNode;
 
-        }else{
+        } else {
 
             newNode.next = head.next;//new node
             head.next = newNode;//head points to new node
@@ -40,24 +40,19 @@ public class CircularLinkedList implements Iterable<Point> {
 
             newNode.next.prev = newNode;// the previous first's prev element now points to new node
 
-
         }
 
     }
 
     private float distanceBetween(Point from, Point to) {
-        return (float) Math.sqrt(Math.pow(from.y-to.y, 2) + Math.pow(from.x-to.x, 2));
+        return (float) Math.sqrt(Math.pow(from.y - to.y, 2) + Math.pow(from.x - to.x, 2));
     }
 
-    //multiple calls to totalDistance doesnt mean the total distance should be calculated. the tag will
-    //tell the be used to determine if the method should just act as a getter or should
-    //compute the new total distance and then return that value
+
     public float totalDistance(boolean compute) {
 
 
-        //have a node pointer that points to the newly inserted node
-
-        if(compute) {
+        if (compute) {
             if (head.next.equals(head.prev)) {
                 total += (distanceBetween(newlyInsertedNode.point, newlyInsertedNode.prev.point));
             } else {
@@ -65,22 +60,6 @@ public class CircularLinkedList implements Iterable<Point> {
             }
         }
 
-
-
-
-
-        /*Node currentNode = head.next;
-        while(currentNode.next != head && currentNode != null)
-        {
-            total+= distanceBetween(currentNode.point, currentNode.next.point);
-            currentNode = currentNode.next;
-
-        }*/
-        /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
         return total;
     }
 
@@ -89,31 +68,23 @@ public class CircularLinkedList implements Iterable<Point> {
         newNode.point = p;
         newlyInsertedNode = newNode;
 
-        if(head == null){//node is empty
+        if (head == null) {//node is empty
 
             newNode.prev = newNode;
             newNode.next = newNode;
             head = newNode;
 
-        }else{
-
-            //new node's next needs to point to previous first
-            //new node's prev needs to point to the last element
-            //previous first's prev needs to point to new node
-            //head needs to point to new no
-            //last element
+        } else {
 
             Node currentNode = head;
-
-            //TODO: make sure to reset the distance to it's original value after altering it
 
             float smallestDistance = distanceBetween(currentNode.point, newNode.point);
             Node closestNode = currentNode;
             currentNode = currentNode.next;
-            while(currentNode != head){
+            while (currentNode != head) {
 
-                if(smallestDistance > distanceBetween(currentNode.point,newNode.point)){
-                    smallestDistance = distanceBetween(currentNode.point,newNode.point);
+                if (smallestDistance > distanceBetween(currentNode.point, newNode.point)) {
+                    smallestDistance = distanceBetween(currentNode.point, newNode.point);
                     closestNode = currentNode;
                 }
                 currentNode = currentNode.next;
@@ -130,61 +101,37 @@ public class CircularLinkedList implements Iterable<Point> {
             newNode.next.prev = newNode;// the previous first's prev element now points to new node
 
 
+        }
 
-
-            }
-
-
-
-        /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
     }
 
     public void insertSmallest(Point p) {
-        /**
-         **
-         **  Goal is to go through the array and then find the insertion location that gives the least total distance
-         *
-         *    create new node with p
-         *
-         *   min total distance //total distance without new node + total distance if inserted right after first node
-         *   start off from the second node:
-         *   while the current node is not the first one:
-         *       calculate what total distance would be if inserted right after the current node position by setting newlyInsertedNode.next to currentNode's next and prev to current node
-         *
-         **
-         **/
+
         Node newNode = new Node();
         newNode.point = p;
         newlyInsertedNode = newNode;
 
 
-        if(head == null){
+        if (head == null) {
             newNode.prev = newNode;
             newNode.next = newNode;
             head = newNode;
 
-        }else{
+        } else {
             Node currentNode = head;
             newlyInsertedNode.next = currentNode.next;
             newlyInsertedNode.prev = currentNode;
             float minTotalDistance = totalDistance(true);
             Node minTotalDistanceNode = currentNode;
 
-
             currentNode = currentNode.next;
-
 
             decrementTotalDistanceBy(newlyInsertedNode);
 
-            //
-            while(currentNode != head){
+            while (currentNode != head) {
                 newlyInsertedNode.next = currentNode.next;
-                newlyInsertedNode.prev =currentNode;
-                if(totalDistance(true) < minTotalDistance){
+                newlyInsertedNode.prev = currentNode;
+                if (totalDistance(true) < minTotalDistance) {
                     minTotalDistance = totalDistance(false);
                     minTotalDistanceNode = currentNode;
                 }
@@ -210,11 +157,11 @@ public class CircularLinkedList implements Iterable<Point> {
         head = null;
     }
 
-    private void decrementTotalDistanceBy(Node newNode){
-        if(newNode.next.equals(newNode.prev)){
+    private void decrementTotalDistanceBy(Node newNode) {
+        if (newNode.next.equals(newNode.prev)) {
             total = 0;
-        }else{
-            total = totalDistance(false) - (distanceBetween(newNode.point,newNode.prev.point) + distanceBetween(newNode.point,newNode.next.point)) + distanceBetween(newNode.prev.point,newNode.next.point);
+        } else {
+            total = totalDistance(false) - (distanceBetween(newNode.point, newNode.prev.point) + distanceBetween(newNode.point, newNode.next.point)) + distanceBetween(newNode.prev.point, newNode.next.point);
         }
 
     }
