@@ -1,17 +1,4 @@
-/* Copyright 2016 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 
 package com.google.engedu.touringmusician;
 
@@ -25,11 +12,7 @@ public class CircularLinkedList implements Iterable<Point> {
     private class Node {
         Point point;
         Node prev, next;
-        /**
-         **
-         **  YOUR CODE GOES HERE
-         **
-         **/
+
     }
 
     Node head;
@@ -49,11 +32,6 @@ public class CircularLinkedList implements Iterable<Point> {
 
         }else{
 
-            //new node's next needs to point to previous first
-            //new node's prev needs to point to the last element
-            //previous first's prev needs to point to new node
-            //head needs to point to new no
-            //last element
             newNode.next = head.next;//new node
             head.next = newNode;//head points to new node
 
